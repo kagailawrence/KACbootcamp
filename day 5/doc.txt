@@ -1,0 +1,11 @@
+What Is Modular Code?
+
+Modular code means breaking a large program into smaller, reusable, and organized parts
+ (modules or files).
+Each module handles one specific task — making code easier to read, test, and maintain.
+
+Why Modular Code Matters
+Improves readability.
+Makes debugging easier.
+Encourages reusability.
+Enables teamwork — different people can work on separate modules.

@@ -1,0 +1,3 @@
+Modular Code & File Structure
+Git Branching & Merging Basics
+Lab: Collaborate with a Peer via GitHub (Pull Request Workflow)
