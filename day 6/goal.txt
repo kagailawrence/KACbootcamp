@@ -1,0 +1,9 @@
+
+Todays goal
+
+Finish when we left on GIT branches 
+Strings & Text Processing
+File Handling Basics
+Using AI (GitHub Copilot) for Code Completion
+
+

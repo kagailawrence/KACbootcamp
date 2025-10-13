@@ -1,0 +1,3 @@
+AI tools like GitHub Copilot, ChatGPT, or Cursor IDE can 
+predict and complete code as 
+you type — speeding up development and reducing syntax errors.
