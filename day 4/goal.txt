@@ -1,0 +1,4 @@
+Goal
+Understand how to define and use functions with parameters and return values.
+Handle errors gracefully using try/catch (Python or JavaScript).
+Understand type casting in Python
