@@ -1,0 +1,4 @@
+Exercise:
+Run your calculator in the terminal.
+Test all four operations.
+Push your code to your GitHub repo as “day2-calculator”.

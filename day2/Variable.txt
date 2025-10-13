@@ -1,0 +1,25 @@
+
+A variable is like a container that stores data in memory.
+You can name it, assign a value, and reuse it throughout your program.
+
+
+name = "Lawrence"
+age = 25
+is_developer = True
+
+
+
+Rules for Naming Variables
+
+Must begin with a letter or underscore (_)
+Cannot start with a number  
+No spaces (use _ or camelCase)  first_lastname fistName
+Case-sensitive (e.g., Age ≠ age)
+
+Good Examples:
+user_name, totalAmount, isLoggedIn
+
+Bad Examples:
+1name, total amount, @age
+
+
