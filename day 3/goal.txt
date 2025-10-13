@@ -1,0 +1,8 @@
+Goal:
+
+Control Flow (if/else, loops)
+Lists/Arrays & Dictionaries/Objects
+Mini Exercise: Grade Calculator
+review basic commands in git 
+
+
