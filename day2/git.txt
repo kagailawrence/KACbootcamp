@@ -1,0 +1,26 @@
+What is Git?
+
+Git is a version control system that helps track changes in code,
+collaborate with others, and revert to earlier versions if something breaks.
+
+
+Step 1: Initialize Git
+Create a new local Git repository inside your project folder.
+
+git init
+
+Step 2: Add Files to Staging Area
+To include your files in the next commit:
+
+git add .
+
+git add test.py
+
+Step 3: Commit Your Changes
+A commit saves your progress with a message explaining what you changed.
+
+git commit -m "Added simple calculator program"
+
+STEP 4: Pushing changes to the Github Account
+git push origin master 
+

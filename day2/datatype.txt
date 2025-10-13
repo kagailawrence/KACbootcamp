@@ -1,0 +1,45 @@
+
+
+Type	                Description	        Python Example
+
+String	                Text	                "Hello Hello"
+
+Integer/Number	        Whole number	        42
+Float	                Decimal number	        3.14
+Boolean	                True/False  value	    True or False
+List / Array	        Collection of items 	[1, 2, 3]
+Dictionary / Object	    Key-value pairs         {"name": "Pam", "age":20}
+
+
+
+
+Operators
+Operators are symbols that perform actions on variables or values.
+
+Arithmetic Operators:
+Operator	        Meaning	        Example (Python / JS)	Output
++	                Addition	        5 + 3	                8
+-	                Subtraction	        5 - 3	                2
+*	                Multiplication	    5 * 3	                15
+/	                Division	        6 / 2	                3
+%	                Modulus (remainder)	5 % 2	                1
+
+
+
+Comparison Operators:
+Operator	            Meaning	        Example	        Output
+==	                    Equal to	        5 == 5	        True   
+!=	                    Not equal	        5 != 3	        True
+>	                    Greater than	    5 > 3	        True
+<	                    Less than	        5 < 5	        True
+>=	                    Greater or equal	5 >= 4	        True
+
+
+name="Lawrence"
+
+Logical Operators:
+Operator	        Meaning	                Example	        Output
+and / &&	        True if both are true	True and True	True
+or                                                 	         True if one is true
+not / !         	Inverts the result	    not True	        False
+
