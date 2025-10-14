@@ -1,0 +1,5 @@
+Goal
+
+Functions & Scope (Global / Local Variables)
+Writing Clean, Reusable Code with AI Suggestions
+Hands-On Project: Text-Based To-Do List App
