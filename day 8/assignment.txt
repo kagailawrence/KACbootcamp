@@ -1,0 +1,5 @@
+Create a class Student with attributes name, age, grade,list of courses,list of units, and
+a method display_info().
+Then:
+Create 3 student objects.
+Print all their info using a loop.
