@@ -1,0 +1,16 @@
+Using AI (ChatGPT/Copilot) to Write Cleaner Code
+
+Prompt:
+Build a small console app that:
+-Lets users add, view, and remove tasks.
+-Uses functions to structure the logic.
+-Stores tasks in a list.
+
+
+
+--after
+Try refactoring the app to store tasks in a JSON file (to persist data).
+“Add file saving functionality to my Python to-do list.”
+
+assignment
+Add features: task editing, due dates, or marking tasks as complete.
