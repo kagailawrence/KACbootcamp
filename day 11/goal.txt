@@ -1,0 +1,6 @@
+goal of the day
+
+1.prompt
+2.Python Packages
+3.Virtual Environments
+

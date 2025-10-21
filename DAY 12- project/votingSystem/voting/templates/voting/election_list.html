@@ -1,0 +1,39 @@
+{% extends 'voting/base.html' %}
+
+{% block title %}Active Elections{% endblock %}
+
+{% block content %}
+<div class="px-4 py-6 sm:px-0">
+    <h2 class="text-3xl font-bold text-gray-900 mb-6">Active Elections</h2>
+
+    {% if elections %}
+        <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            {% for election in elections %}
+                <div class="bg-white overflow-hidden shadow rounded-lg">
+                    <div class="p-6">
+                        <h3 class="text-lg font-medium text-gray-900 mb-2">{{ election.title }}</h3>
+                        <p class="text-sm text-gray-600 mb-4">{{ election.description|truncatechars:100 }}</p>
+                        <div class="text-sm text-gray-500 mb-4">
+                            <p>Start: {{ election.start_date|date:"M d, Y H:i" }}</p>
+                            <p>End: {{ election.end_date|date:"M d, Y H:i" }}</p>
+                        </div>
+                        <a href="{% url 'election_detail' election.id %}" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700">
+                            View Details & Vote
+                        </a>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p class="text-gray-500">No active elections at the moment.</p>
+    {% endif %}
+
+    {% if user.is_staff %}
+        <div class="mt-8">
+            <a href="{% url 'create_election' %}" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700">
+                Create New Election
+            </a>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

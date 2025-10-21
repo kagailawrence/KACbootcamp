@@ -1,0 +1,89 @@
+{% extends 'voting/base.html' %}
+
+{% block title %}Manage Election: {{ election.title }}{% endblock %}
+
+{% block content %}
+<div class="px-4 py-6 sm:px-0">
+    <div class="bg-white shadow overflow-hidden sm:rounded-lg mb-6">
+        <div class="px-4 py-5 sm:px-6">
+            <h2 class="text-2xl font-bold text-gray-900">{{ election.title }}</h2>
+            <p class="mt-1 max-w-2xl text-sm text-gray-500">{{ election.description }}</p>
+            <p class="mt-2 text-sm text-gray-500">Status: {% if election.is_active %}Active{% else %}Inactive{% endif %}</p>
+        </div>
+        <div class="border-t border-gray-200 px-4 py-5 sm:px-6">
+            <form method="post" class="inline">
+                {% csrf_token %}
+                {% if election.is_active %}
+                    <button type="submit" name="deactivate" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
+                        Deactivate Election
+                    </button>
+                {% else %}
+                    <button type="submit" name="activate" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
+                        Activate Election
+                    </button>
+                {% endif %}
+            </form>
+        </div>
+    </div>
+
+    <div class="bg-white shadow overflow-hidden sm:rounded-lg">
+        <div class="px-4 py-5 sm:px-6">
+            <h3 class="text-lg font-medium text-gray-900">Candidates</h3>
+        </div>
+        <div class="border-t border-gray-200">
+            <ul class="divide-y divide-gray-200">
+                {% for candidate in candidates %}
+                    <li class="px-6 py-4">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <h4 class="text-sm font-medium text-gray-900">{{ candidate.name }}</h4>
+                                {% if candidate.description %}
+                                    <p class="text-sm text-gray-500">{{ candidate.description }}</p>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </li>
+                {% empty %}
+                    <li class="px-6 py-4 text-center text-gray-500">No candidates added yet.</li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="px-4 py-5 sm:px-6 border-t border-gray-200">
+            <h4 class="text-md font-medium text-gray-900 mb-4">Add New Candidate</h4>
+            <form method="post">
+                {% csrf_token %}
+                <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                    <div>
+                        <label for="{{ candidate_form.name.id_for_label }}" class="block text-sm font-medium text-gray-700">{{ candidate_form.name.label }}</label>
+                        {{ candidate_form.name }}
+                        {% if candidate_form.name.errors %}
+                            <p class="text-red-500 text-xs mt-1">{{ candidate_form.name.errors.0 }}</p>
+                        {% endif %}
+                    </div>
+                    <div>
+                        <label for="{{ candidate_form.description.id_for_label }}" class="block text-sm font-medium text-gray-700">{{ candidate_form.description.label }}</label>
+                        {{ candidate_form.description }}
+                        {% if candidate_form.description.errors %}
+                            <p class="text-red-500 text-xs mt-1">{{ candidate_form.description.errors.0 }}</p>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="mt-4">
+                    <button type="submit" name="add_candidate" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                        Add Candidate
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="mt-6">
+        <a href="{% url 'election_list' %}" class="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
+            Back to Elections
+        </a>
+        <a href="{% url 'election_results' election.id %}" class="ml-3 inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
+            View Results
+        </a>
+    </div>
+</div>
+{% endblock %}

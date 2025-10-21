@@ -1,0 +1,31 @@
+What Are Python Packages?
+Definition
+A package is a collection of reusable Python modules (code) that add extra functionality 
+so you don’t have to write everything from scratch.
+
+Examples:
+requests → makes HTTP requests easily.
+pandas → handles data analysis.
+django → creates web applications.
+google-generativeai → connects to Gemini AI APIs.
+
+You can install these packages using Python’s package manager: pip.
+
+
+
+| Action                     | Command                            | Example                          |
+| -------------------------- | ---------------------------------- | -------------------------------- |
+| Check pip version          | `pip --version`                    | `pip --version`                  |
+| Install a package          | `pip install <package>`            | `pip install requests`           |
+| Install a specific version | `pip install <package>==<version>` | `pip install flask==2.3.0`       |
+| Upgrade a package          | `pip install --upgrade <package>`  | `pip install --upgrade requests` |
+| Uninstall a package        | `pip uninstall <package>`          | `pip uninstall pandas`           |
+| List installed packages    | `pip list`                         | `pip list`                       |
+| Search for packages        | `pip search <keyword>`             | `pip search flask`               |
+
+
+
+Example
+pip install requests
+
+

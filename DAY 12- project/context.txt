@@ -1,0 +1,156 @@
+System Prompt Context for MVP: Secure Voting System (Django + PostgreSQL + Tailwind)
+🎯 Goal
+
+Develop a secure, anonymous, and scalable voting system MVP using Django, Python, Tailwind CSS, and PostgreSQL.
+The system must ensure authentication, vote secrecy, data integrity, and election transparency, while maintaining simplicity, readability, and compliance with best Django practices.
+
+🧩 Core Technologies
+
+Backend Framework: Django (latest LTS)
+
+Frontend: Tailwind CSS (through Django static files or npm integration)
+
+Database: PostgreSQL
+
+Monitoring: Django Prometheus
+
+Security Layer: Python’s secrets and cryptography libraries
+
+Authentication: Django’s built-in authentication system with role-based control (Admin, Voter)
+
+⚙️ High-Level Architecture
+
+Follow the MVC pattern with clean separation of concerns:
+
+Models: Represent election data, users, ballots, and results.
+
+Views: Use Django class-based views or DRF (if API-based).
+
+Templates: Tailwind-powered responsive UI.
+
+Middleware: Enforce security and compliance policies.
+
+Services/Utils: Isolate encryption, token management, and validation logic.
+
+🏗️ App Structure
+secure_vote/
+├── config/                # Django project configuration
+│   ├── settings.py
+│   ├── urls.py
+│   └── wsgi.py
+├── core/                  # Shared utilities (middleware, services, helpers)
+│   ├── middleware/
+│   │   └── election_guard.py
+│   ├── utils/
+│   │   ├── cryptography.py
+│   │   ├── validators.py
+│   │   └── monitoring.py
+├── accounts/              # Authentication & voter management
+│   ├── models.py          # Voter model (extends AbstractUser)
+│   ├── views.py
+│   ├── forms.py
+│   └── urls.py
+├── elections/             # Election setup & management
+│   ├── models.py          # Election, Candidate, Ballot
+│   ├── views.py
+│   ├── urls.py
+│   └── services/
+│       ├── vote_handler.py
+│       └── integrity.py
+├── templates/             # Tailwind-styled templates
+│   ├── base.html
+│   ├── login.html
+│   ├── dashboard.html
+│   └── results.html
+└── static/
+    ├── css/
+    └── js/
+
+🧱 Models Design
+
+1. Voter (Authentication)
+
+Extends AbstractUser
+
+Has fields for voter ID, verification status, and eligibility.
+
+Linked to election eligibility but not linked to ballots directly for anonymity.
+
+2. Ballot (Anonymous Votes)
+
+Stores election, candidate, and encrypted token (not linked to voter).
+
+Use secrets.token_hex() for anonymous voter tokens.
+
+Integrity check via cryptographic signature.
+
+3. Election
+
+Manages start/end time, status, and candidate lists.
+
+Only admins can create or close elections.
+
+4. Candidate
+
+Linked to a specific election.
+
+Name, description, and vote count (updated via secure aggregation).
+
+🧩 Middleware
+
+ElectionTimeMiddleware: Prevent voting outside allowed timeframes.
+
+IPCheckMiddleware: Restrict access to whitelisted regions or prevent double voting attempts.
+
+RequestAuditMiddleware: Log and monitor suspicious activities.
+
+🔐 Security Practices
+
+Use Django’s CSRF protection and secure session cookies.
+
+Implement HTTPS-only access and security headers (SecurityMiddleware).
+
+Encrypt sensitive data with Fernet (symmetric encryption).
+
+Use secrets for secure random tokens and anonymous vote IDs.
+
+Never link voter identities directly to ballots.
+
+📊 Monitoring
+
+Integrate Django Prometheus for:
+
+Request latency
+
+Failed logins
+
+Suspicious activity count
+
+Election uptime and performance
+
+Example setup in settings.py:
+
+INSTALLED_APPS += ['django_prometheus']
+MIDDLEWARE = ['django_prometheus.middleware.PrometheusBeforeMiddleware'] + MIDDLEWARE + ['django_prometheus.middleware.PrometheusAfterMiddleware']
+
+💡 Advanced Features (Optional for MVP)
+
+OTP-based voter verification via email/SMS.
+
+Real-time election result dashboard (with cache).
+
+Role-based access control for observers or auditors.
+
+Audit trail export to CSV or encrypted log file.
+
+🧭 Implementation Tips
+
+Keep models decoupled—especially voter and ballot relationships.
+
+Use Django’s form validation and clean methods for input validation.
+
+Write modular, testable utility functions.
+
+Use environment variables for secret keys and DB credentials.
+
+Keep Tailwind classes semantic and minimal for readability.

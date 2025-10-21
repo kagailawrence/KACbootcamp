@@ -1,0 +1,111 @@
+What is Prompt Engineering?
+Definition
+
+Prompt Engineering is the practice of designing and refining inputs (prompts)
+to get useful, accurate, and reliable outputs from AI models
+(like Gemini, DeepSeek, or ChatGPT).
+It’s how you communicate with the model effectively 
+you’re giving it instructions in plain language, but with technical precision.
+
+
+Simple Example
+Bad Prompt:
+Write Python code.
+
+Good Prompt:
+Write a Python function that reads a JSON file of students’ names and scores, calculates
+the average, and prints the top 3 students with their grades.
+
+
+Types of Prompts
+| Type               | Description                          | Example                                                                |
+| ------------------ | ------------------------------------ | ---------------------------------------------------------------------- |
+| **Instructional**  | Directs the model to perform a task. | “Explain this Python code line by line.”                               |
+| **Creative**       | Asks for content generation.         | “Write a product description for a smart lock.”                        |
+| **Analytical**     | Asks the AI to reason or summarize.  | “Summarize this code block in plain English.”                          |
+| **Conversational** | Maintains ongoing dialogue.          | “Continue from where you left off explaining the class inheritance.”   |
+| **Structured**     | Requests formatted output.           | “Return the output as a JSON object with fields name, age, and score.” |
+
+
+
+
+Developer-Focused Prompt Examples
+
+| Use Case            | Prompt Example                                                                   |
+| ------------------- | -------------------------------------------------------------------------------- |
+| **Code Generation** | “Write a Python script to parse a CSV file and store results in PostgreSQL.”     |
+| **Refactoring**     | “Refactor this code to follow clean architecture and modular design principles.” |
+| **Debugging**       | “Explain why this Python function throws a KeyError and suggest a fix.”          |
+| **Documentation**   | “Generate concise documentation and docstrings for this django API.”              |
+| **Testing**         | “Write 3 unit tests for this function using pytest.”    
+
+
+
+
+Techniques for Writing Effective Prompts
+Technique #1 — Be Clear & Specific
+
+Bad:“Write code for login.”
+Good:“Write a secure login system in Node.js using JWT authentication, including input validation and error handling.”
+
+
+Specificity guides the model’s scope and format.
+
+
+
+Technique #2 — Provide Context
+
+Tell the model who it is and what role it’s playing.
+
+“You are a senior Python developer. Explain this Flask route to a beginner.”
+
+Context improves accuracy and tone.
+
+
+
+
+Technique #3 — Set the Output Format
+
+“Return the result as JSON with keys: status, explanation, and example_code.”
+
+AI responds best when told how to format the output (text, list, table, JSON, etc.).
+
+
+
+Technique #4 — Give Examples (Few-Shot Prompting)
+
+“Here is one example input and output. Use the same style for the next one.”
+
+This helps the model learn your pattern quickly.
+
+
+
+
+Technique #5 — Chain Prompts (Prompt Chaining)
+
+Break complex tasks into smaller prompts.
+
+1.“Explain what this code does.”
+2.“Now refactor it to improve readability.”
+3.“Finally, generate docstrings for each function.”
+
+This step-by-step chaining produces far better results than one massive prompt.
+
+
+Technique #6 — Use Constraints
+
+You can control tone, style, and scope.
+“Explain this function in 3 sentences or less.”
+“Write JavaScript code only — no explanations.”                         |
+
+
+AI Behavior Control — Roles & Constraints
+
+| Role          | Example Prompt                                                                |
+| ------------- | ----------------------------------------------------------------------------- |
+| **Teacher**   | “You are a programming instructor. Explain decorators in Python.”             |
+| **Reviewer**  | “You are a senior engineer reviewing my code for best practices.”             |
+| **Debugger**  | “You are a debugging assistant. Find logical errors in this function.”        |
+| **Architect** | “You are a software architect. Suggest a better file structure for this app.” |
+
+Nb:By defining the AI’s role, you narrow its focus and improve precision.
