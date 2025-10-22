@@ -16,10 +16,18 @@
                 </div>
                 <div class="flex items-center space-x-4">
                     {% if user.is_authenticated %}
-                        <span>Welcome, {{ user.username }}</span>
+                        <span>Welcome, {{ user.username }} ({{ user.get_role_display }})</span>
+                        {% if user.role == 'admin' %}
+                            <a href="{% url 'admin_dashboard' %}" class="bg-purple-500 hover:bg-purple-700 px-3 py-2 rounded">Dashboard</a>
+                        {% elif user.role == 'auditor' %}
+                            <a href="{% url 'auditor_dashboard' %}" class="bg-purple-500 hover:bg-purple-700 px-3 py-2 rounded">Dashboard</a>
+                        {% elif user.role == 'voter' %}
+                            <a href="{% url 'voter_dashboard' %}" class="bg-purple-500 hover:bg-purple-700 px-3 py-2 rounded">Dashboard</a>
+                        {% endif %}
                         <a href="{% url 'logout' %}" class="bg-blue-500 hover:bg-blue-700 px-3 py-2 rounded">Logout</a>
                     {% else %}
                         <a href="{% url 'login' %}" class="bg-blue-500 hover:bg-blue-700 px-3 py-2 rounded">Login</a>
+                        <a href="{% url 'signup' %}" class="bg-green-500 hover:bg-green-700 px-3 py-2 rounded">Sign Up</a>
                     {% endif %}
                 </div>
             </div>

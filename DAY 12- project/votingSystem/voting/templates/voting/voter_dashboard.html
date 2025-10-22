@@ -1,0 +1,151 @@
+{% extends "voting/base_dashboard.html" %}
+
+{% block dashboard_title %}Voter Dashboard{% endblock %}
+
+{% block dashboard_content %}
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+    <!-- Voter Status -->
+    <div class="bg-white rounded-lg shadow p-6">
+        <h3 class="text-xl font-semibold text-gray-900 mb-4">Your Voting Status</h3>
+        {% if voter %}
+            <div class="space-y-3">
+                <div class="flex justify-between items-center">
+                    <span>Registration Status</span>
+                    {% if voter.is_registered %}
+                        <span class="text-green-600 font-semibold">✓ Registered</span>
+                    {% else %}
+                        <span class="text-red-600 font-semibold">✗ Not Registered</span>
+                    {% endif %}
+                </div>
+                <div class="flex justify-between items-center">
+                    <span>Voting Status</span>
+                    {% if voter.has_voted %}
+                        <span class="text-blue-600 font-semibold">✓ Voted</span>
+                    {% else %}
+                        <span class="text-gray-600 font-semibold">Not Voted</span>
+                    {% endif %}
+                </div>
+                <div class="flex justify-between items-center">
+                    <span>Registration Date</span>
+                    <span class="font-semibold">{{ voter.registration_date|date:"M d, Y" }}</span>
+                </div>
+            </div>
+        {% else %}
+            <p class="text-gray-600">You are not registered as a voter yet.</p>
+            <a href="{% url 'voter_registration' %}" class="mt-4 inline-block bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+                Register as Voter
+            </a>
+        {% endif %}
+    </div>
+
+    <!-- Vote Verification -->
+    {% if recent_ballot %}
+    <div class="bg-white rounded-lg shadow p-6">
+        <h3 class="text-xl font-semibold text-gray-900 mb-4">Recent Vote Verification</h3>
+        <div class="space-y-3">
+            <div class="flex justify-between items-center">
+                <span>Ballot ID</span>
+                <span class="font-mono text-sm">{{ recent_ballot.ballot_id }}</span>
+            </div>
+            <div class="flex justify-between items-center">
+                <span>Timestamp</span>
+                <span class="font-semibold">{{ recent_ballot.timestamp|date:"M d, Y H:i" }}</span>
+            </div>
+            <button onclick="verifyVote('{{ recent_ballot.ballot_id }}')" class="w-full bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">
+                Verify Vote
+            </button>
+        </div>
+        <div id="verification-result" class="mt-4 hidden">
+            <h4 class="font-semibold">Verification Result:</h4>
+            <div id="verification-content"></div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+
+<!-- Upcoming Elections -->
+<div class="bg-white rounded-lg shadow p-6 mb-8">
+    <h3 class="text-xl font-semibold text-gray-900 mb-4">Upcoming Elections</h3>
+    {% if upcoming_elections %}
+        <div class="space-y-4">
+            {% for election in upcoming_elections %}
+            <div class="flex justify-between items-center p-4 bg-gray-50 rounded">
+                <div>
+                    <h4 class="font-medium">{{ election.title }}</h4>
+                    <p class="text-sm text-gray-600">{{ election.description|truncatechars:100 }}</p>
+                    <p class="text-sm text-gray-600">Starts: {{ election.start_date|date:"M d, Y H:i" }}</p>
+                </div>
+                <span class="text-blue-600 font-semibold">Upcoming</span>
+            </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p class="text-gray-500 text-center py-8">No upcoming elections at this time.</p>
+    {% endif %}
+</div>
+
+<!-- Active Elections -->
+<div class="bg-white rounded-lg shadow p-6">
+    <h3 class="text-xl font-semibold text-gray-900 mb-4">Active Elections</h3>
+    {% if active_elections %}
+        <div class="space-y-4">
+            {% for election in active_elections %}
+            <div class="flex justify-between items-center p-4 bg-green-50 rounded">
+                <div>
+                    <h4 class="font-medium">{{ election.title }}</h4>
+                    <p class="text-sm text-gray-600">{{ election.description|truncatechars:100 }}</p>
+                    <p class="text-sm text-gray-600">Ends: {{ election.end_date|date:"M d, Y H:i" }}</p>
+                </div>
+                <div class="flex items-center space-x-2">
+                    {% if voting_status|get:election.id %}
+                        <span class="text-green-600 font-semibold">✓ Voted</span>
+                    {% else %}
+                        <a href="{% url 'election_detail' election.id %}" class="bg-blue-600 text-white px-3 py-1 rounded text-sm hover:bg-blue-700">
+                            Vote Now
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p class="text-gray-500 text-center py-8">No active elections at this time.</p>
+    {% endif %}
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+async function verifyVote(ballotId) {
+    try {
+        const response = await fetch(`/voter/verify/${ballotId}/`);
+        const data = await response.json();
+
+        const resultDiv = document.getElementById('verification-result');
+        const contentDiv = document.getElementById('verification-content');
+
+        resultDiv.classList.remove('hidden');
+
+        if (data.verified) {
+            contentDiv.innerHTML = `
+                <div class="text-green-600">
+                    <p><strong>Election:</strong> ${data.election}</p>
+                    <p><strong>Candidate:</strong> ${data.candidate}</p>
+                    <p><strong>Timestamp:</strong> ${new Date(data.timestamp).toLocaleString()}</p>
+                    <p><strong>Ballot ID:</strong> ${data.ballot_id}</p>
+                </div>
+            `;
+        } else {
+            contentDiv.innerHTML = `<div class="text-red-600"><p>${data.error || 'Verification failed'}</p></div>`;
+        }
+    } catch (error) {
+        console.error('Verification error:', error);
+        const resultDiv = document.getElementById('verification-result');
+        const contentDiv = document.getElementById('verification-content');
+        resultDiv.classList.remove('hidden');
+        contentDiv.innerHTML = '<div class="text-red-600"><p>Network error during verification</p></div>';
+    }
+}
+</script>
+{% endblock %}

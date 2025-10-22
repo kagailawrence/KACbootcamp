@@ -1,0 +1,11 @@
+{% extends "voting/base.html" %}
+
+{% block title %}Logged Out{% endblock %}
+
+{% block content %}
+<div class="max-w-md mx-auto bg-white p-6 rounded-lg shadow-md text-center">
+    <h2 class="text-2xl font-bold mb-4">You have been logged out</h2>
+    <p class="mb-4">Thank you for using the Secure Voting System.</p>
+    <a href="{% url 'login' %}" class="bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700">Log in again</a>
+</div>
+{% endblock %}

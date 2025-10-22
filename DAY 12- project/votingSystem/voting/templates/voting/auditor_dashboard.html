@@ -1,0 +1,101 @@
+{% extends "voting/base_dashboard.html" %}
+
+{% block dashboard_title %}Auditor Dashboard{% endblock %}
+
+{% block dashboard_content %}
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+    <!-- Audit Stats -->
+    <div class="bg-white rounded-lg shadow p-6">
+        <h3 class="text-lg font-semibold text-gray-900 mb-2">Total Logs</h3>
+        <p class="text-3xl font-bold text-blue-600">{{ total_logs }}</p>
+    </div>
+    <div class="bg-white rounded-lg shadow p-6">
+        <h3 class="text-lg font-semibold text-gray-900 mb-2">Security Checks</h3>
+        <p class="text-3xl font-bold text-green-600">{{ security_checks }}</p>
+    </div>
+    <div class="bg-white rounded-lg shadow p-6">
+        <h3 class="text-lg font-semibold text-gray-900 mb-2">Vote Logs</h3>
+        <p class="text-3xl font-bold text-purple-600">{{ vote_logs }}</p>
+    </div>
+</div>
+
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+    <!-- Integrity Status -->
+    <div class="bg-white rounded-lg shadow p-6">
+        <h3 class="text-xl font-semibold text-gray-900 mb-4">System Integrity</h3>
+        <div class="space-y-4">
+            <div class="flex justify-between items-center">
+                <span>Double Voting Detected</span>
+                {% if double_voting_detected %}
+                    <span class="text-red-600 font-semibold">⚠ Detected</span>
+                {% else %}
+                    <span class="text-green-600 font-semibold">✓ None</span>
+                {% endif %}
+            </div>
+            <div class="flex justify-between items-center">
+                <span>Hash Chain Validation</span>
+                {% if hash_chain_valid %}
+                    <span class="text-green-600 font-semibold">✓ Valid</span>
+                {% else %}
+                    <span class="text-red-600 font-semibold">✗ Invalid</span>
+                {% endif %}
+            </div>
+            <div class="flex justify-between items-center">
+                <span>Encryption Integrity</span>
+                <span class="text-green-600 font-semibold">✓ Active</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Export Options -->
+    <div class="bg-white rounded-lg shadow p-6">
+        <h3 class="text-xl font-semibold text-gray-900 mb-4">Export Audit Logs</h3>
+        <div class="space-y-3">
+            <a href="{% url 'export_audit_csv' %}" class="block w-full bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 text-center">
+                Export as CSV
+            </a>
+            <a href="{% url 'export_audit_pdf' %}" class="block w-full bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 text-center">
+                Export as PDF
+            </a>
+        </div>
+        <p class="text-sm text-gray-600 mt-4">
+            Export audit logs for compliance reporting and external verification.
+        </p>
+    </div>
+</div>
+
+<!-- Integrity Logs -->
+<div class="bg-white rounded-lg shadow p-6">
+    <h3 class="text-xl font-semibold text-gray-900 mb-4">Vote Integrity Logs</h3>
+    <div class="overflow-x-auto">
+        <table class="min-w-full table-auto">
+            <thead>
+                <tr class="bg-gray-50">
+                    <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Timestamp</th>
+                    <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Action</th>
+                    <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">User</th>
+                    <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Election</th>
+                    <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">IP Address</th>
+                    <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Hash</th>
+                </tr>
+            </thead>
+            <tbody class="bg-white divide-y divide-gray-200">
+                {% for log in integrity_logs %}
+                <tr>
+                    <td class="px-4 py-2 text-sm text-gray-900">{{ log.timestamp|date:"M d, Y H:i:s" }}</td>
+                    <td class="px-4 py-2 text-sm text-gray-900">{{ log.get_action_display }}</td>
+                    <td class="px-4 py-2 text-sm text-gray-900">{{ log.user.username|default:"System" }}</td>
+                    <td class="px-4 py-2 text-sm text-gray-900">{{ log.election.title|default:"N/A" }}</td>
+                    <td class="px-4 py-2 text-sm text-gray-900">{{ log.ip_address|default:"N/A" }}</td>
+                    <td class="px-4 py-2 text-sm font-mono text-xs text-gray-900">{{ log.hash_value|truncatechars:16 }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% if not integrity_logs %}
+    <p class="text-gray-500 text-center py-8">No integrity logs available yet.</p>
+    {% endif %}
+</div>
+
+{% endblock %}

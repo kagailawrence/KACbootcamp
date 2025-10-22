@@ -50,6 +50,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'voting.middleware.SessionSecurityMiddleware',
+    'voting.middleware.RoleRequiredMiddleware',
     'voting.middleware.VoterAuthenticationMiddleware',
     'voting.middleware.BallotSecurityMiddleware',
     'django_prometheus.middleware.PrometheusAfterMiddleware',
@@ -133,3 +135,15 @@ TAILWIND_APP_NAME = 'voting'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Custom User Model
+AUTH_USER_MODEL = 'voting.User'
+
+# Session Security Settings
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+SESSION_COOKIE_SECURE = False  # Set to True in production with HTTPS
+SESSION_COOKIE_HTTPONLY = True
+SESSION_COOKIE_SAMESITE = 'Strict'
+
+# Security Settings
+SECURE_SSL_REDIRECT = False  # Set to True in production

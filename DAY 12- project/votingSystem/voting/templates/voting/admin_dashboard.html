@@ -1,0 +1,140 @@
+{% extends "voting/base_dashboard.html" %}
+
+{% block dashboard_title %}Admin Dashboard{% endblock %}
+
+{% block dashboard_content %}
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+    <!-- Election Stats -->
+    <div class="bg-white rounded-lg shadow p-6">
+        <h3 class="text-lg font-semibold text-gray-900 mb-2">Total Elections</h3>
+        <p class="text-3xl font-bold text-blue-600">{{ total_elections }}</p>
+    </div>
+    <div class="bg-white rounded-lg shadow p-6">
+        <h3 class="text-lg font-semibold text-gray-900 mb-2">Active Elections</h3>
+        <p class="text-3xl font-bold text-green-600">{{ active_elections|length }}</p>
+    </div>
+    <div class="bg-white rounded-lg shadow p-6">
+        <h3 class="text-lg font-semibold text-gray-900 mb-2">Registered Voters</h3>
+        <p class="text-3xl font-bold text-purple-600">{{ registered_voters }}</p>
+    </div>
+    <div class="bg-white rounded-lg shadow p-6">
+        <h3 class="text-lg font-semibold text-gray-900 mb-2">Participation Rate</h3>
+        <p class="text-3xl font-bold text-orange-600">{{ participation_rate }}%</p>
+    </div>
+</div>
+
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+    <!-- Election Management -->
+    <div class="bg-white rounded-lg shadow p-6">
+        <h3 class="text-xl font-semibold text-gray-900 mb-4">Election Management</h3>
+        <div class="space-y-3">
+            <a href="{% url 'create_election' %}" class="block w-full bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 text-center">
+                Create New Election
+            </a>
+            <a href="{% url 'election_list' %}" class="block w-full bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 text-center mt-2">
+                View Elections
+            </a>
+            {% for election in active_elections %}
+            <div class="flex justify-between items-center p-3 bg-gray-50 rounded">
+                <div>
+                    <h4 class="font-medium">{{ election.title }}</h4>
+                    <p class="text-sm text-gray-600">Ends: {{ election.end_date|date:"M d, Y H:i" }}</p>
+                </div>
+                <a href="{% url 'manage_election' election.id %}" class="bg-green-600 text-white px-3 py-1 rounded text-sm hover:bg-green-700">
+                    Manage
+                </a>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Security Health -->
+    <div class="bg-white rounded-lg shadow p-6">
+        <h3 class="text-xl font-semibold text-gray-900 mb-4">Security Health</h3>
+        <div class="space-y-4">
+            <div class="flex justify-between items-center">
+                <span>Encryption Active</span>
+                <span class="text-green-600 font-semibold">✓ Active</span>
+            </div>
+            <div class="flex justify-between items-center">
+                <span>Hash Chain Valid</span>
+                <span class="text-green-600 font-semibold">✓ Valid</span>
+            </div>
+            <div class="flex justify-between items-center">
+                <span>Total Votes</span>
+                <span class="font-semibold">{{ system_metrics.total_votes }}</span>
+            </div>
+            <div class="flex justify-between items-center">
+                <span>IP Access Attempts</span>
+                <span class="font-semibold">{{ system_metrics.ip_attempts }}</span>
+            </div>
+            <div class="flex justify-between items-center">
+                <span>Anomalies Detected</span>
+                <span class="text-red-600 font-semibold">{{ system_metrics.anomalies }}</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Charts Section -->
+<div class="mt-8 bg-white rounded-lg shadow p-6">
+    <h3 class="text-xl font-semibold text-gray-900 mb-4">Election Analytics</h3>
+    <canvas id="votesChart" width="400" height="200"></canvas>
+</div>
+
+<!-- Recent Activity -->
+<div class="mt-8 bg-white rounded-lg shadow p-6">
+    <h3 class="text-xl font-semibold text-gray-900 mb-4">Recent Activity</h3>
+    <div class="overflow-x-auto">
+        <table class="min-w-full table-auto">
+            <thead>
+                <tr class="bg-gray-50">
+                    <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Time</th>
+                    <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Action</th>
+                    <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">User</th>
+                    <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Election</th>
+                </tr>
+            </thead>
+            <tbody class="bg-white divide-y divide-gray-200">
+                {% for log in recent_logs %}
+                <tr>
+                    <td class="px-4 py-2 text-sm text-gray-900">{{ log.timestamp|date:"M d, H:i" }}</td>
+                    <td class="px-4 py-2 text-sm text-gray-900">{{ log.get_action_display }}</td>
+                    <td class="px-4 py-2 text-sm text-gray-900">{{ log.user.username|default:"System" }}</td>
+                    <td class="px-4 py-2 text-sm text-gray-900">{{ log.election.title|default:"N/A" }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+const votesData = {{ votes_per_election | safe }};
+const ctx = document.getElementById('votesChart').getContext('2d');
+new Chart(ctx, {
+    type: 'bar',
+    data: {
+        labels: votesData.map(item => item.election),
+        datasets: [{
+            label: 'Votes Cast',
+            data: votesData.map(item => item.votes),
+            backgroundColor: 'rgba(59, 130, 246, 0.5)',
+            borderColor: 'rgba(59, 130, 246, 1)',
+            borderWidth: 1
+        }]
+    },
+    options: {
+        responsive: true,
+        scales: {
+            y: {
+                beginAtZero: true
+            }
+        }
+    }
+});
+</script>
+{% endblock %}
