@@ -1,0 +1,4 @@
+write code in python then connect it to gemini api on the cli 
+
+install 
+pip install -q -U google-genai

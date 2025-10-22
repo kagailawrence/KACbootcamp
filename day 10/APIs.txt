@@ -1,0 +1,27 @@
+What is an API?
+
+An API (Application Programming Interface) is a way for your program to talk to
+another service using code.
+When we use an LLM API, we send a prompt (input) and receive a response (output).
+
+Typical API Flow
+
+Send Request → Your app sends a message to the AI model.
+Model Processes → The LLM interprets and generates a response.
+Receive Response → Your app displays or uses that text.
+
+
+Best Practices for AI API Integration
+Do’s:
+
+    Always keep your API key secret (use environment variables).
+    Handle network errors gracefully (use try/except or try/catch).
+    Limit requests to avoid hitting API quotas.
+    Log all prompts and responses for analysis (optional) during Development.
+
+
+ Don’ts:
+
+    Don’t expose keys in public repositories.
+    Don’t rely blindly on AI outputs — verify them. read and read and read the just to be safe
+    Don’t spam APIs — respect rate limits. wait for random waiting sec before making the next request

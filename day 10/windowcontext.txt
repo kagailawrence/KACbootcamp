@@ -1,0 +1,35 @@
+Definition
+
+An LLM’s context window is the maximum amount of information (text, code, or tokens) 
+it can see and reason about at once during a single prompt or conversation.
+Think of it as the model’s short-term memory — if your input + output 
+together exceed this limit, the oldest parts get “pushed out” of memory.
+
+What Is a Token?
+
+A token is a chunk of text — roughly:
+    1 token ≈ 4 characters in English text
+    100 tokens ≈ 75 words
+    1,000 tokens ≈ about 750 words
+
+So:
+    1 million tokens ≈ 750,000 words (roughly an 800–1000-page book!)
+    But code is denser — it uses more symbols and shorter words.
+    How Tokens Map to Code
+
+On average:
+    1 line of code = 35–50 tokens (depending on indentation, variable names, comments, etc.)
+    So roughly:
+
+    | Tokens           | Approx. Lines of Code |
+    | ---------------- | --------------------- |
+    | 1,000 tokens     | ~20–30 lines          |
+    | 10,000 tokens    | ~250–300 lines        |
+    | 100,000 tokens   | ~2,500–3,000 lines    |
+    | 1,000,000 tokens | ~25,000–30,000 lines  |
+
+1 million tokens ≈ a mid-sized full project — like a complete Django backend, or a medium React + Node.js app.
+
+arch Software
+
+{modules}
